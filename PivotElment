@@ -32,3 +32,27 @@ int main(){
   int pivotans = pivot(arr,7);
   cout << "Pivot element of the array is at Index " << pivotans << endl;
 }
+
+// Code for 11 as pivot element
+
+int pivot(int arr[], int n){
+    int start = 0;
+    int end = n-1;
+    int mid = start + (end - start)/2;
+    while(start < end){
+        if(arr[mid] < arr[end]){
+            end = mid;
+        }
+        if(arr[mid] > arr[end]){
+            start = mid + 1;
+        }
+        mid = start + (end - start)/2;
+    }
+     return (start - 1 + n)%n;
+}
+
+int main(){
+  int arr[7] = {7,8,11,0,1,2,3};
+  int pivotans = pivot(arr,7);
+  cout << "Pivot element of the array is at Index " << pivotans << endl;
+}
