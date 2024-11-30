@@ -48,7 +48,7 @@ int pivot(int arr[], int n){
         }
         mid = start + (end - start)/2;
     }
-     return (start - 1 + n)%n;
+     return (start - 1 + n)%n;                // keyyyyy
 }
 
 int main(){
