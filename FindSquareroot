@@ -1,7 +1,7 @@
 #include<iostream>
 using namespace std;
 
-// Basic method
+// Basic method (only finds integer and not decimal)
 
 int sqrroot(int n){
     int count = 0;
@@ -26,7 +26,7 @@ int main(){
     cout << "Square Root of " << n << " is " << ans;
 }
 
-// Using Binary Search
+// Using Binary Search (only finds integer and not decimal)
 
 int sqrroot(int n){
     int start = 0;
@@ -60,3 +60,50 @@ int main(){
     return 0;
 }
 
+// Perfect Method (with decimal no.)
+
+int sqrroot(int n){
+    int start = 0;
+    int end = n;
+    int ans = 0;
+    while(start<= end){
+    int mid = start + (end - start)/2;
+
+    if((long long)mid*mid == n){
+        return mid;
+    }
+
+    if((long long)mid*mid < n){
+        start = mid + 1;
+         ans = mid;
+    }
+
+    else{
+        end = mid - 1;
+    }
+  }
+  return ans;
+}
+
+double preciseSol(int n , int precision , int tempSol){
+
+    double factor = 1;
+    double ans = tempSol;
+
+    for(int i = 0; i < precision ; i++){
+        factor = factor / 10;
+        for(double j = ans ; j*j < n ; j = j+factor){
+            ans = j;
+        }
+     }
+    return ans;
+}
+
+int main(){
+    int n;
+    cout << "Enter any no of which square root is required ";
+    cin >> n;
+    int tempSol= sqrroot(n);
+    cout << "Square Root of " << n << " is " << preciseSol(n ,3 , tempSol);
+    return 0;
+}
