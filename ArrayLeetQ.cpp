@@ -1,4 +1,4 @@
-//Reverse the Array
+// Reverse the Array
 
 #include<iostream>
 using namespace std;
@@ -29,14 +29,14 @@ int main(){
     reverse_arr(a,5);
 }
 
-Reverse an Array after  m position
+// Reverse an Array after  m position
 
 
 #include<iostream>
 using namespace std;
 
 void reverse_arr(int arr[],int n,int key){
-int start=key;
+int start=key+1;
     int end=n-1;
     while(start<=end){
         swap(arr[start],arr[end]);
