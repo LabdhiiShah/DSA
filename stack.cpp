@@ -70,36 +70,42 @@ class stack
 int main()
 {
     stack s(5);
-    cout << "\n1.Push\n2.Pop\n3.Peek\n4.Empty?\nEnter your choice: ";
-    int n;
-    cin >> n;
-    switch(n)
+    while(true)
     {
-        case 1:
-        {            
-            int a;
-            cout << "Enter the element to push: ";
-            cin >> a;
-            cout << s.push(a) << endl;
-            break;
-        }
-
-        case 2:
-            {
-                cout << s.pop() << endl;
-                break;
-            }
-
-        case 3:
-            {
-                cout << s.peek() << endl;
-                break;
-            }
-        case 4:
+        cout << "\n1.Push\n2.Pop\n3.Peek\n4.Empty?\n5.Exit\nEnter your choice: ";
+        int n;
+        cin >> n;
+        switch(n)
         {
-            cout << s.empty() << endl;
-            break;
-        }     
+            case 1:
+            {            
+                int a;
+                cout << "Enter the element to push: ";
+                cin >> a;
+                cout << s.push(a) << endl;
+                break;
+            }
+    
+            case 2:
+                {
+                    cout << s.pop() << endl;
+                    break;
+                }
+    
+            case 3:
+                {
+                    cout << s.peek() << endl;
+                    break;
+                }
+            case 4:
+            {
+                cout << s.empty() << endl;
+                break;
+            }     
+            case 5: exit(0);
+    
+            default: cout << "Wrong Choice" << endl;
+        }
     }
     return 0;
 }
