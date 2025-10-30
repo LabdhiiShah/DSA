@@ -32,7 +32,7 @@ class queue
     {
         if(front == rear)
         {
-            cout << "Underflow Condition\n";
+            cout << "Underflow Condition\n";  
             return -1;
         }
 
