@@ -1,25 +1,45 @@
 #include<iostream>
-#include<unordered_map>
-#include<set>
-#include<vector>
-#include<queue>
+#include <bits/stdc++.h>
 using namespace std;
 
-void prepareAdjset(unordered_map<int,set<int>>&adjset, vector<pair<int,int>>&edges)
+void adjacencylist(int vertex, const vector<vector<int>>&edges, unordered_map<int, unordered_set<int>>&adjlist)
 {
+    
+    // for(int i = 0; i < vertex; i++)
+    //     adjlist[i];
+        
+    
+    // creating adjacency list
     for(int i = 0; i < edges.size(); i++)
     {
-        int u = edges[i].first;
-        int v = edges[i].second;
+        int u = edges[i][0];
+        int v = edges[i][1];
         
-        adjset[u].insert(v);
-        adjset[v].insert(u);
+        adjlist[u].insert(v);
+    }
+    
+    // printing adjacenecy list
+    // adjlist : map<int,set<int>>adjlist
+    // list of : ( _ : _, _, _ ) such list
+    // so it is used to access elements of adjlist, adjlist has 2 elements (int, list of int)
+    // so it.first is int & it.second is that list
+    // so br is accessing each element of that list
+    
+    cout << "Adjacency list: \n";
+    for(auto &it: adjlist)
+    {
+        cout << it.first << " -> ";
+        for(auto &br: it.second)
+        {
+            cout << br << " ";
+        }
+        cout << endl;
     }
 }
 
-void bfs(unordered_map<int,set<int>>&adjset, unordered_map<int,bool>&visited, vector<int>&ans, int node)
+void bfs(unordered_map<int, unordered_set<int>>&adjlist, unordered_map<int,bool>&visited, vector<int>&ans, int node)
 {
-    queue <int> q;
+    queue<int>q;
     q.push(node);
     visited[node] = 1;
     
@@ -29,7 +49,8 @@ void bfs(unordered_map<int,set<int>>&adjset, unordered_map<int,bool>&visited, ve
         q.pop();
         
         ans.push_back(frontNode);
-        for(auto i: adjset[frontNode])
+        
+        for(auto &i: adjlist[frontNode])
         {
             if(!visited[i])
             {
@@ -40,19 +61,19 @@ void bfs(unordered_map<int,set<int>>&adjset, unordered_map<int,bool>&visited, ve
     }
 }
 
-vector<int>BFS(int vertex, vector<pair<int,int>>edges)
+vector<int> BFS(int vertex, vector<vector<int>>&edges)
 {
-    vector<int>ans;
+    unordered_map<int, unordered_set<int>>adjlist;
     unordered_map<int,bool>visited;
-    unordered_map<int,set<int>>adjset;
+    vector<int>ans;
+    adjacencylist(vertex, edges,adjlist);
     
-    prepareAdjset(adjset,edges);
-    
-    for(int i = 0; i < vertex; i++)
+    for(auto &it: adjlist)
     {
+        int i = it.first;
         if(!visited[i])
         {
-            bfs(adjset,visited,ans,i);
+            bfs(adjlist,visited,ans,i);
         }
     }
     return ans;
@@ -60,17 +81,114 @@ vector<int>BFS(int vertex, vector<pair<int,int>>edges)
 
 int main()
 {
-    int vertex, edgesCount;
-    cout << "Enter number of vertices: ";
+    int vertex, n;
+    vector<vector<int>>edges;
+    
+    cout << "Enter total no.of vertex: ";
     cin >> vertex;
+    cout << "Enter total no.of edges :";
+    cin >> n;
+    cout << "Enter all the edges: \n";
+    for(int  i = 0; i < n; i++)
+    {
+        int u, v;
+        cin >> u >> v;
+        edges.push_back({u,v});
+    }
+    
+    vector <int> result = BFS(vertex,edges);
+    cout << "\nBFS: ";
+    for(auto &i: result)
+    {
+        cout << i << "  ";
+    }
+    return 0;
+}
 
-    cout << "Enter number of edges: ";
-    cin >> edgesCount;
+/*
+for sorted output
+simply replace unordered_map with map and unordered_set with 
 
-    vector<pair<int, int>> edges;
+#include <iostream>
+#include <bits/stdc++.h>
+using namespace std;
 
-    cout << "Enter edges (u v):" << endl;
-    for (int i = 0; i < edgesCount; i++)
+void adjacencylist(int vertex, const vector<vector<int>>& edges, map<int, set<int>>& adjlist)
+{
+    // Create adjacency list
+    for (int i = 0; i < edges.size(); i++)
+    {
+        int u = edges[i][0];
+        int v = edges[i][1];
+        adjlist[u].insert(v);
+    }
+
+    cout << "Adjacency list:\n";
+    for (auto &it : adjlist)
+    {
+        cout << it.first << " -> ";
+        for (auto &br : it.second)
+        {
+            cout << br << " ";
+        }
+        cout << endl;
+    }
+}
+
+void bfs(map<int, set<int>>& adjlist, unordered_map<int, bool>& visited, vector<int>& ans, int node)
+{
+    queue<int> q;
+    q.push(node);
+    visited[node] = 1;
+
+    while (!q.empty())
+    {
+        int frontNode = q.front();
+        q.pop();
+        ans.push_back(frontNode);
+
+        for (auto &i : adjlist[frontNode]) // set → always gives sorted neighbors
+        {
+            if (!visited[i])
+            {
+                q.push(i);
+                visited[i] = 1;
+            }
+        }
+    }
+}
+
+vector<int> BFS(int vertex, vector<vector<int>>& edges)
+{
+    map<int, set<int>> adjlist;  // keeps everything sorted
+    unordered_map<int, bool> visited;
+    vector<int> ans;
+
+    adjacencylist(vertex, edges, adjlist);
+
+    for (auto &it : adjlist)
+    {
+        int i = it.first;
+        if (!visited[i])
+        {
+            bfs(adjlist, visited, ans, i);
+        }
+    }
+    return ans;
+}
+
+int main()
+{
+    int vertex, n;
+    vector<vector<int>> edges;
+
+    cout << "Enter total no.of vertex: ";
+    cin >> vertex;
+    cout << "Enter total no.of edges: ";
+    cin >> n;
+
+    cout << "Enter all the edges: \n";
+    for (int i = 0; i < n; i++)
     {
         int u, v;
         cin >> u >> v;
@@ -78,34 +196,14 @@ int main()
     }
 
     vector<int> result = BFS(vertex, edges);
-
-    cout << "\nBFS Traversal: ";
-    for (int node : result)
+    cout << "\nBFS: ";
+    for (auto &i : result)
     {
-        cout << node << " ";
+        cout << i << "  ";
     }
     cout << endl;
-
     return 0;
 }
 
-// static
 
-// int main()
-// {
-//     int vertex = 5;
-//     vector<pair<int, int>> edges = {
-//         {0, 1}, {0, 2}, {1, 3}, {2, 4}
-//     };
-
-//     vector<int> result = BFS(vertex, edges);
-
-//     cout << "BFS Traversal: ";
-//     for (int node : result)
-//     {
-//         cout << node << " ";
-//     }
-//     cout << endl;
-
-//     return 0;
-// }
+*/
